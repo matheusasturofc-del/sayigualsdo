@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "sayigualsdo",
+  "version": "${version}",
+  "name": "SayIgual",
+  "description": "Fale o nome de um bloco ou mob no Simple Voice Chat (português ou inglês) e ele toma conta do mundo ao seu redor.",
+  "authors": ["matheusasturo"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.matheusasturo.sayigualsdo.SayIgualMod"],
+    "voicechat": ["com.matheusasturo.sayigualsdo.SayIgualVoicePlugin"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21 <1.21.2",
+    "java": ">=21",
+    "fabric-api": "*",
+    "voicechat": "*"
+  }
+}

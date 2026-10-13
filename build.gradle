@@ -1,0 +1,59 @@
+plugins {
+    id 'fabric-loom' version '1.10-SNAPSHOT'
+}
+
+version = "${project.mod_version}+${project.minecraft_version}"
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven {
+        name = 'henkelmax'
+        url = 'https://maven.maxhenkel.de/repository/public'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // API do Simple Voice Chat (o mod em si e instalado pelo jogador)
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:${project.voicechat_api_version}"
+
+    // Reconhecimento de voz offline. O JNA ja vem com o Minecraft.
+    implementation("com.alphacephei:vosk:${project.vosk_version}") {
+        exclude group: 'net.java.dev.jna'
+    }
+    include("com.alphacephei:vosk:${project.vosk_version}")
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+    it.options.encoding = 'UTF-8'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
+}
