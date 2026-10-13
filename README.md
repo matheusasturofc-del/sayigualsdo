@@ -40,6 +40,7 @@ Use o arquivo **sem** `-sources` no nome. Ou compile você mesmo com `./gradlew 
 - Os blocos são trocados aos poucos (40 mil por tick) para não travar o servidor. Só blocos sólidos/líquidos
   são trocados — o ar continua ar (dá para mudar com `replaceAir`).
 - Baús e outros containers são esvaziados antes de serem trocados (igual ao `/fill`), para não encher o chão de itens.
+- Toca o **som de XP** quando os blocos surgem e em cada mob que nasce (desligue com `playXpSound`).
 - Mobs hostis não aparecem no modo **Pacífico**.
 
 ## Comandos (precisa ser OP / ter cheats ligados)
@@ -63,6 +64,7 @@ Use o arquivo **sem** `-sources` no nome. Ou compile você mesmo com `./gradlew 
 | `replaceAir` | `false` | Se `true`, o ar também vira o bloco (você fica preso dentro!) |
 | `showTranscripts` | `true` | Mostra na action bar o que o mod entendeu |
 | `announceToEveryone` | `true` | Avisa no chat de todos |
+| `playXpSound` | `true` | Som de XP quando os blocos/mobs surgem |
 | `useGrammar` | `false` | Faz o reconhecimento só procurar nomes de blocos/mobs (mais preciso, mas qualquer fala vira algum bloco) |
 | `minNameLength` | `3` | Ignora nomes muito curtos |
 | `blockBlacklist` / `entityBlacklist` | ar, pistão em movimento, luz... | Ids que nunca são usados (ex.: `"minecraft:ender_dragon"`) |

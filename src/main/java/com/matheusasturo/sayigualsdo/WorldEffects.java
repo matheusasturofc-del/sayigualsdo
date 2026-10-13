@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Clearable;
@@ -36,6 +38,9 @@ public final class WorldEffects {
     public void replaceBlocks(ServerPlayer player, Block block, SayIgualConfig config) {
         List<ChunkPos> chunks = nearestChunks(player, Math.max(1, config.chunkCount));
         jobs.add(new ReplaceJob(player.serverLevel(), block.defaultBlockState(), chunks, config.replaceAir));
+        if (config.playXpSound) {
+            playXp(player.serverLevel(), player.getX(), player.getY(), player.getZ());
+        }
     }
 
     /** Faz {@code mobCount} mobs nascerem em volta do jogador. */
@@ -56,9 +61,20 @@ public final class WorldEffects {
             }
             if (type.spawn(level, new BlockPos(x, y, z), MobSpawnType.COMMAND) != null) {
                 spawned++;
+                if (config.playXpSound) {
+                    // Um "plim" de XP onde cada mob nasceu.
+                    playXp(level, x + 0.5, y, z + 0.5);
+                }
             }
         }
         return spawned;
+    }
+
+    /** O som de pegar orbe de XP, com o tom variando um pouco como no vanilla. */
+    private static void playXp(ServerLevel level, double x, double y, double z) {
+        RandomSource random = level.getRandom();
+        float pitch = (random.nextFloat() - random.nextFloat()) * 0.35F + 0.9F;
+        level.playSound(null, x, y, z, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0F, pitch);
     }
 
     /** Chamado no fim de cada tick do servidor. */

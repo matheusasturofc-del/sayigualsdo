@@ -49,6 +49,9 @@ public class SayIgualConfig {
     /** Avisa no chat de todos quem falou o quê. */
     public boolean announceToEveryone = true;
 
+    /** Toca o som de XP quando os blocos/mobs surgem. */
+    public boolean playXpSound = true;
+
     /** Silêncio (ms) após o qual a frase é considerada terminada. */
     public int utteranceTimeoutMs = 600;
 
