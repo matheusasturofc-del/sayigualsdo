@@ -49,7 +49,7 @@ public class SayIgualConfig {
     /** Avisa no chat de todos quem falou o quê. */
     public boolean announceToEveryone = true;
 
-    /** Toca o som de XP quando os blocos/mobs surgem. */
+    /** Toca o som de XP quando termina de trocar os blocos ou de fazer os mobs nascerem. */
     public boolean playXpSound = true;
 
     /** Silêncio (ms) após o qual a frase é considerada terminada. */

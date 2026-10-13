@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Os efeitos no mundo: trocar os blocos das chunks mais próximas e fazer mobs nascerem.
@@ -37,10 +38,8 @@ public final class WorldEffects {
     /** Troca todos os blocos das {@code chunkCount} chunks mais perto do jogador. */
     public void replaceBlocks(ServerPlayer player, Block block, SayIgualConfig config) {
         List<ChunkPos> chunks = nearestChunks(player, Math.max(1, config.chunkCount));
-        jobs.add(new ReplaceJob(player.serverLevel(), block.defaultBlockState(), chunks, config.replaceAir));
-        if (config.playXpSound) {
-            playXp(player.serverLevel(), player.getX(), player.getY(), player.getZ());
-        }
+        jobs.add(new ReplaceJob(player.serverLevel(), player.getUUID(), block.defaultBlockState(), chunks,
+                config.replaceAir, config.playXpSound));
     }
 
     /** Faz {@code mobCount} mobs nascerem em volta do jogador. */
@@ -61,11 +60,11 @@ public final class WorldEffects {
             }
             if (type.spawn(level, new BlockPos(x, y, z), MobSpawnType.COMMAND) != null) {
                 spawned++;
-                if (config.playXpSound) {
-                    // Um "plim" de XP onde cada mob nasceu.
-                    playXp(level, x + 0.5, y, z + 0.5);
-                }
             }
+        }
+        if (config.playXpSound && spawned > 0) {
+            // Um "plim" de XP quando todos os mobs já nasceram.
+            playXp(level, player.getX(), player.getY(), player.getZ());
         }
         return spawned;
     }
@@ -85,6 +84,7 @@ public final class WorldEffects {
             budget = job.run(budget);
             if (job.isDone()) {
                 jobs.poll();
+                job.finished();
             }
         }
     }
@@ -122,16 +122,35 @@ public final class WorldEffects {
         private final BlockState target;
         private final List<ChunkPos> chunks;
         private final boolean replaceAir;
+        private final UUID playerId;
+        private final boolean playSound;
         private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         private int chunkIndex;
         private int sectionIndex;
         private int localIndex;
 
-        ReplaceJob(ServerLevel level, BlockState target, List<ChunkPos> chunks, boolean replaceAir) {
+        ReplaceJob(ServerLevel level, UUID playerId, BlockState target, List<ChunkPos> chunks,
+                   boolean replaceAir, boolean playSound) {
+            this.playerId = playerId;
+            this.playSound = playSound;
             this.level = level;
             this.target = target;
             this.chunks = chunks;
             this.replaceAir = replaceAir;
+        }
+
+        /** Todos os blocos foram trocados: toca o "plim" de XP em quem falou. */
+        void finished() {
+            if (!playSound) {
+                return;
+            }
+            ServerPlayer player = level.getServer().getPlayerList().getPlayer(playerId);
+            if (player != null && player.serverLevel() == level) {
+                playXp(level, player.getX(), player.getY(), player.getZ());
+            } else {
+                ChunkPos first = chunks.get(0);
+                playXp(level, first.getMiddleBlockX(), level.getSeaLevel(), first.getMiddleBlockZ());
+            }
         }
 
         boolean isDone() {
