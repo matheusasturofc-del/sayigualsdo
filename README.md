@@ -3,7 +3,7 @@
 Mod **Fabric** para **Minecraft 1.21.1** ligado ao **[Simple Voice Chat](https://modrinth.com/plugin/simple-voice-chat)**.
 Toda vez que alguém fala no voice chat (em **português** ou **inglês**) o nome de:
 
-- **um bloco** → todos os blocos das **16 chunks mais perto** de quem falou viram esse bloco.
+- **um bloco** → todos os blocos das **64 chunks mais perto** de quem falou viram esse bloco.
   Ex.: *"bloco de diamante"* / *"diamond block"* → tudo vira bloco de diamante.
 - **um mob** → nascem **20** dele em volta de quem falou.
   Ex.: *"creeper"*, *"zumbi"*, *"porco"*, *"cow"*.
@@ -56,7 +56,7 @@ Use o arquivo **sem** `-sources` no nome. Ou compile você mesmo com `./gradlew 
 
 | Opção | Padrão | Descrição |
 |---|---|---|
-| `chunkCount` | `16` | Quantas chunks mais próximas são trocadas |
+| `chunkCount` | `64` | Quantas chunks mais próximas são trocadas |
 | `mobCount` | `20` | Quantos mobs nascem |
 | `mobSpawnRadius` | `8` | Raio (blocos) onde os mobs nascem |
 | `blocksPerTick` | `40000` | Blocos trocados por tick (menos = menos lag, mais devagar) |

@@ -26,7 +26,7 @@ public class SayIgualConfig {
     public boolean enabled = true;
 
     /** Quantas chunks (as mais próximas de quem falou) têm os blocos trocados. */
-    public int chunkCount = 16;
+    public int chunkCount = 64;
 
     /** Quantos mobs nascem quando alguém fala o nome de um mob. */
     public int mobCount = 20;
