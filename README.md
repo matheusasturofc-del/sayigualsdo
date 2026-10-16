@@ -79,6 +79,11 @@ Se o download automático não funcionar, baixe e extraia manualmente em `<pasta
 
 (ficando `sayigualsdo/models/vosk-model-small-pt-0.3/` e `sayigualsdo/models/vosk-model-small-en-us-0.15/`).
 
+## Outro mod deste repositório: Olhar Fatal 👁️
+
+Time **Kill** mata o time **View** com um hit, mas congela (contornado de vermelho, soltando partículas vermelhas)
+enquanto alguém do View olha para ele. Veja [`olharfatal/README.md`](olharfatal/README.md).
+
 ## Licença
 
 MIT

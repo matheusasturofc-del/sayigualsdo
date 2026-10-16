@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "olharfatal",
+  "version": "${version}",
+  "name": "Olhar Fatal",
+  "description": "Time Kill mata o time View com um hit, mas fica congelado (contornado de vermelho) enquanto alguém do time View estiver olhando para ele.",
+  "authors": ["matheusasturo"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.matheusasturo.olharfatal.OlharFatalMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21 <1.21.2",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

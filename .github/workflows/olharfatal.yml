@@ -1,0 +1,50 @@
+name: olharfatal
+
+on:
+  push:
+    paths:
+      - 'olharfatal/**'
+      - '.github/workflows/olharfatal.yml'
+  pull_request:
+    paths:
+      - 'olharfatal/**'
+      - '.github/workflows/olharfatal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build
+        run: ./gradlew -p olharfatal build --stacktrace
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: olharfatal
+          path: olharfatal/build/libs/*.jar
+      # Publica o .jar na página "Releases" para baixar com um clique.
+      - name: Publish release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: olharfatal-download
+          name: Olhar Fatal (download)
+          target_commitish: ${{ github.sha }}
+          make_latest: false
+          body: |
+            Baixe o arquivo **olharfatal-...+1.21.1.jar** abaixo (não o `-sources`) e coloque na pasta `mods`.
+            Precisa de Fabric 1.21.1 e Fabric API.
+
+            Commit: ${{ github.sha }}
+          files: |
+            olharfatal/build/libs/olharfatal-*+1.21.1.jar
+          fail_on_unmatched_files: true
