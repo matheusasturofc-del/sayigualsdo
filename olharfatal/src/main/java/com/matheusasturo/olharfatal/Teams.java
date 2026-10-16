@@ -44,7 +44,7 @@ public final class Teams {
         if (team == null) {
             team = scoreboard.addPlayerTeam(role.teamName);
             team.setDisplayName(Component.literal(role.teamName).withStyle(role.color));
-            team.setPrefix(Component.literal("[" + role.teamName + "] ").withStyle(role.color));
+            team.setPlayerPrefix(Component.literal("[" + role.teamName + "] ").withStyle(role.color));
         }
         if (team.getColor() != role.color) {
             team.setColor(role.color);
